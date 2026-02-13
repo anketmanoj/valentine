@@ -43,7 +43,6 @@ export default function QuestionCard({
       {!accepted && (
         <>
           <h1 className="headline">will you be my valentine?</h1>
-          <p className="sub">No pink. No cringe. Only memes and consequences.</p>
         </>
       )}
 

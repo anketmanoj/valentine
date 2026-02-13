@@ -2,7 +2,6 @@ export default function MemePanel({ visible, meme, videoRef, audioRef }) {
   return (
     <section className={`memePanel ${visible ? "show" : ""}`}>
       <div className="memeHeader">
-        <div className="tag">brainrot mode</div>
         <div className="meta">{meme?.label ? <span>{meme.label}</span> : <span>…</span>}</div>
       </div>
 

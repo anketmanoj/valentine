@@ -6,7 +6,7 @@ export default function SplashScreen({ onNext }) {
       <main className="stage splash">
         <section className="splashCard">
           <h1 className="splashTitle">
-            Still tryna figure out how serious you are. Thought id use this opportunity to ask...
+            Still tryna figure out how serious you are. Thought I’d use this moment to ask properly…
           </h1>
 
           <div className="splashActions">

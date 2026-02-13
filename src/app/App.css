@@ -2,15 +2,28 @@
 
 /* ===== Reset / Base ===== */
 :root {
-  --bg: #07080b;
-  --card: rgba(255, 255, 255, 0.06);
-  --stroke: rgba(255, 255, 255, 0.12);
+  /* Nude / champagne / rose palette */
+  --bg: #0b0808;
+  --bg2: #120c0c;
+
+  --card: rgba(255, 255, 255, 0.05);
+  --stroke: rgba(255, 255, 255, 0.14);
+
   --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.6);
-  --glow: rgba(120, 190, 255, 0.35);
+  --muted: rgba(255, 255, 255, 0.62);
+
+  --nude: rgba(238, 210, 195, 0.85);
+  /* warm nude */
+  --rose: rgba(248, 143, 170, 0.75);
+  /* soft rose */
+  --champagne: rgba(255, 232, 206, 0.75);
+  /* champagne glow */
+  --glow: rgba(248, 143, 170, 0.22);
 
   --radius-lg: 22px;
   --radius-md: 18px;
+
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
 }
 
 *,
@@ -43,12 +56,41 @@ body {
   display: grid;
   place-items: center;
 
-  background:
-    radial-gradient(1200px 600px at 20% 10%, rgba(90, 120, 255, 0.18), transparent 60%),
-    radial-gradient(900px 500px at 80% 30%, rgba(255, 180, 80, 0.10), transparent 55%),
-    linear-gradient(180deg, #06070a, #090a10 60%, #06070a);
+  position: relative;
   overflow: hidden;
+
+  background: radial-gradient(1200px 700px at 20% 10%, rgba(248, 143, 170, 0.14), transparent 60%),
+    radial-gradient(1000px 700px at 80% 25%, rgba(255, 232, 206, 0.10), transparent 55%),
+    radial-gradient(900px 650px at 50% 90%, rgba(238, 210, 195, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg2) 70%, var(--bg));
 }
+
+/* Animated nude “aurora” layer */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(600px 420px at 20% 30%, rgba(248, 143, 170, 0.16), transparent 60%),
+    radial-gradient(700px 500px at 80% 35%, rgba(255, 232, 206, 0.12), transparent 60%),
+    radial-gradient(540px 380px at 50% 80%, rgba(238, 210, 195, 0.12), transparent 60%);
+  filter: blur(24px);
+  opacity: 0.9;
+  animation: auroraDrift 10s var(--ease-out) infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes auroraDrift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1.03);
+  }
+
+  100% {
+    transform: translate3d(2%, 1%, 0) scale(1.07);
+  }
+}
+
 
 .noise {
   position: fixed;
@@ -60,27 +102,50 @@ body {
 
 /* ===== Main stage container ===== */
 .stage {
-  width: min(1100px, 96vw);
-
-  /* Fill the window height but leave breathing room */
-  height: min(860px, 96vh);
-  height: min(860px, 96svh);
-  height: min(860px, 96dvh);
-
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-
-  padding: 18px;
-  position: relative;
-  overflow: hidden;
-
-  display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 16px;
+  z-index: 1;
+  /* above .page::before */
+  animation: stageIn 520ms var(--ease-out) both;
 }
+
+@keyframes stageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Subtle animated border sheen */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-lg) + 2px);
+  background: conic-gradient(from 180deg,
+      transparent,
+      rgba(255, 232, 206, 0.16),
+      rgba(248, 143, 170, 0.12),
+      transparent);
+  filter: blur(6px);
+  opacity: 0.6;
+  animation: rimSpin 6.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rimSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 /* ===== Stage layout variants ===== */
 .stage.noMeme {
@@ -90,11 +155,12 @@ body {
   /* center content */
 }
 
+/* Mobile: meme gets most of the screen */
 .stage.hasMeme {
-  grid-template-rows: 1fr auto;
-  /* meme + question */
-  align-content: stretch;
+  grid-template-rows: 1.9fr 0.9fr;
+  gap: 12px;
 }
+
 
 /* When there's no meme panel, keep question card centered and not too low */
 .stage.noMeme .question {
@@ -103,21 +169,47 @@ body {
 
 /* ===== Meme Panel ===== */
 .memePanel {
+  min-height: 0;
   border-radius: var(--radius-md);
   border: 1px solid var(--stroke);
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(10, 7, 7, 0.45);
   overflow: hidden;
 
-  transform: translateY(10px);
-  opacity: 0.85;
-  transition: opacity 160ms ease, transform 160ms ease;
+  transform: translateY(14px) scale(0.99);
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out);
 }
 
 .memePanel.show {
   opacity: 1;
-  transform: translateY(0px);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 80px var(--glow);
+  transform: translateY(0) scale(1);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 120px var(--glow);
 }
+
+.memeMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  transform: scale(1.01);
+  transition: transform 380ms var(--ease-out), filter 380ms var(--ease-out);
+}
+
+.memePanel.show .memeMedia {
+  transform: scale(1);
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.buttonRow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  align-items: center;
+}
+
+
 
 .memeHeader {
   display: flex;
@@ -188,6 +280,28 @@ body {
   text-transform: lowercase;
 }
 
+.headline, .splashTitle {
+  background: linear-gradient(90deg, rgba(255, 232, 206, 0.95), rgba(248, 143, 170, 0.92), rgba(238, 210, 195, 0.95));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.question {
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+
 .sub {
   margin: 8px 0 0;
   color: var(--muted);
@@ -233,42 +347,59 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 12px 18px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+  transition: transform 180ms var(--ease-out), background 180ms var(--ease-out), border-color 180ms var(--ease-out), box-shadow 240ms var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 232, 206, 0.22), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(248, 143, 170, 0.18), transparent 55%);
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.btn:hover::after {
+  opacity: 1;
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(255, 255, 255, 0.20);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.985);
 }
 
-/* YES green */
+/* YES = nude/champagne */
 .btn.yes {
-  background: rgba(34, 197, 94, 0.22);
-  /* green tint */
-  border-color: rgba(34, 197, 94, 0.42);
-  box-shadow: 0 0 45px rgba(34, 197, 94, 0.20);
+  background: linear-gradient(180deg, rgba(255, 232, 206, 0.18), rgba(238, 210, 195, 0.10));
+  border-color: rgba(255, 232, 206, 0.35);
+  box-shadow: 0 0 60px rgba(255, 232, 206, 0.10), 0 0 120px rgba(248, 143, 170, 0.10);
 }
 
 .btn.yes:hover {
-  background: rgba(34, 197, 94, 0.30);
-  border-color: rgba(34, 197, 94, 0.55);
+  background: linear-gradient(180deg, rgba(255, 232, 206, 0.24), rgba(238, 210, 195, 0.14));
+  border-color: rgba(255, 232, 206, 0.48);
 }
 
-/* NO red */
+/* NO = muted rose */
 .btn.no {
-  background: rgba(255, 90, 90, 0.14);
-  border-color: rgba(255, 120, 120, 0.25);
+  background: rgba(248, 143, 170, 0.08);
+  border-color: rgba(248, 143, 170, 0.22);
+  box-shadow: none;
 }
+
 
 /* ===== Accepted state ===== */
 .accepted {
@@ -305,51 +436,84 @@ body {
 
 /* ===== Responsive: Mobile ===== */
 @media (max-width: 720px) {
+
+  /* Prevent weird iOS scroll bounce */
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 
-  /* allow scroll if content needs it */
-
+  /* Stage fills almost entire phone screen */
   .stage {
-    width: 96vw;
-    height: 96svh;
-    height: 96dvh;
-    padding: 12px;
-    gap: 12px;
+    width: 100vw;
+    height: 98svh;
+    height: 98dvh;
+    padding: 14px;
+    gap: 14px;
+    border-radius: 18px;
   }
 
-  .memeHeader {
-    padding: 10px 10px;
-  }
-
-  .tag {
-    font-size: 11px;
-    padding: 7px 9px;
-  }
-
-  .meta {
-    font-size: 12px;
-  }
-
-  /* When meme exists, keep meme panel slightly taller than question */
+  /* Meme takes majority of screen */
   .stage.hasMeme {
-    grid-template-rows: 1.2fr auto;
+    grid-template-rows: 1.9fr 0.9fr;
   }
 
-  .question {
-    padding: 14px 12px;
+  /* Question-only layout fills better */
+  .stage.noMeme {
+    grid-template-rows: 1fr;
+    place-items: center;
+  }
+
+  .memePanel {
+    min-height: 0;
+  }
+
+  .memeBody {
+    height: 41vh;
+  }
+
+  /* Bigger headline on phone */
+  .headline {
+    font-size: clamp(28px, 6.4vw, 44px);
   }
 
   .sub {
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.4;
   }
 
+  .question {
+    padding: 18px 16px;
+  }
+
+  .actions {
+    margin-top: 18px;
+  }
+
+  /* Bigger tap targets for iPhone */
   .btn {
-    padding: 12px 16px;
-    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 16px;
+    min-height: 52px;
+    min-width: 132px;
+    border-radius: 16px;
+  }
+
+  /* Splash screen adjustments */
+  .stage.splash {
+    height: 98svh;
+    height: 98dvh;
+  }
+
+  .splashCard {
+    width: 100%;
+    padding: 22px 16px;
+  }
+
+  .splashTitle {
+    font-size: clamp(22px, 5.6vw, 36px);
   }
 }
+
 
 /* ===== Very small phones ===== */
 @media (max-width: 380px) {
@@ -435,13 +599,14 @@ body {
 
 .confettiPiece.rect {
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, rgba(255, 232, 206, 0.95), rgba(248, 143, 170, 0.55));
 }
 
 .confettiPiece.dot {
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(238, 210, 195, 0.85);
 }
+
 
 @keyframes confettiFall {
   0% {
