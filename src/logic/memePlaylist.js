@@ -2,19 +2,19 @@ export const MEMES = [
   {
     id: "varun-smile",
     type: "video",
-    src: "/memes/varun-smile.mp4",
+    src: "/memes/hair_clip.mov",
     label: "Varun dumb smile 😭",
   },
   {
     id: "maa-shakti",
     type: "video",
-    src: "/memes/maa-shakti.mp4",
+    src: "/memes/hair_clip.mov",
     label: "maa shakti moment ⚡",
   },
   {
     id: "arjun-stare",
     type: "video",
-    src: "/memes/arjun-stare.mp4",
+    src: "/memes/hair_clip.mov",
     label: "Arjun stare of judgement 🧿",
   },
 
