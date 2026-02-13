@@ -1,8 +1,10 @@
+const base = import.meta.env.BASE_URL;
+
 export const YES_MEMES = [
   {
-    id: "yes-video-1",
+    id: "southie",
     type: "video",
-    src: "/memes/yes-special.mp4",
-    label: "good girl energy 😌",
+    src: `${base}memes/southie.mp4`,
+    label: "Good, its nice to dream big",
   },
 ];
