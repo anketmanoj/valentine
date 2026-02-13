@@ -1,0 +1,367 @@
+/* src/app/app.css */
+
+/* ===== Reset / Base ===== */
+:root {
+  --bg: #07080b;
+  --card: rgba(255, 255, 255, 0.06);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.6);
+  --glow: rgba(120, 190, 255, 0.35);
+
+  --radius-lg: 22px;
+  --radius-md: 18px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  overflow: hidden;
+  /* app handles its own scroll if needed */
+}
+
+/* ===== Full-viewport wrapper (mobile-safe) ===== */
+/* Use dvh/svh when supported to avoid iOS Safari address bar jump */
+.page {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  width: 100vw;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(90, 120, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, rgba(255, 180, 80, 0.10), transparent 55%),
+    linear-gradient(180deg, #06070a, #090a10 60%, #06070a);
+  overflow: hidden;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* ===== Main stage container ===== */
+.stage {
+  width: min(1100px, 96vw);
+
+  /* Fill the window height but leave breathing room */
+  height: min(860px, 96vh);
+  height: min(860px, 96svh);
+  height: min(860px, 96dvh);
+
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 16px;
+}
+
+/* ===== Stage layout variants ===== */
+.stage.noMeme {
+  grid-template-rows: 1fr;
+  /* only question */
+  place-items: center;
+  /* center content */
+}
+
+.stage.hasMeme {
+  grid-template-rows: 1fr auto;
+  /* meme + question */
+  align-content: stretch;
+}
+
+/* When there's no meme panel, keep question card centered and not too low */
+.stage.noMeme .question {
+  width: min(900px, 96%);
+}
+
+/* ===== Meme Panel ===== */
+.memePanel {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--stroke);
+  background: rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+
+  transform: translateY(10px);
+  opacity: 0.85;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.memePanel.show {
+  opacity: 1;
+  transform: translateY(0px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 80px var(--glow);
+}
+
+.memeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 10px;
+}
+
+.tag {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fill available space; media will scale inside */
+.memeBody {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.memePlaceholder {
+  color: var(--muted);
+  font-size: 15px;
+  text-align: center;
+  padding: 18px;
+}
+
+.memeMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Question Card ===== */
+.question {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--stroke);
+  background: var(--card);
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.headline {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 44px);
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+
+.sub {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+/* Button arena */
+.actions {
+  margin-top: 16px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  /* default */
+}
+
+/* takeover mode: keep things clipped in the arena */
+.actions.takeover {
+  overflow: hidden;
+}
+
+/* Initial NO position: right side of the arena */
+.noRight {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+}
+
+/* YES should sit beneath NO */
+.takeoverYes {
+  z-index: 3;
+}
+
+/* NO always above YES */
+.btn.no {
+  z-index: 6;
+}
+
+.btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 12px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* YES green */
+.btn.yes {
+  background: rgba(34, 197, 94, 0.22);
+  /* green tint */
+  border-color: rgba(34, 197, 94, 0.42);
+  box-shadow: 0 0 45px rgba(34, 197, 94, 0.20);
+}
+
+.btn.yes:hover {
+  background: rgba(34, 197, 94, 0.30);
+  border-color: rgba(34, 197, 94, 0.55);
+}
+
+/* NO red */
+.btn.no {
+  background: rgba(255, 90, 90, 0.14);
+  border-color: rgba(255, 120, 120, 0.25);
+}
+
+/* ===== Accepted state ===== */
+.accepted {
+  margin-top: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.acceptedCard {
+  width: min(520px, 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(120, 190, 255, 0.22);
+}
+
+.big {
+  font-size: 44px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.line {
+  font-weight: 800;
+}
+
+.tiny {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ===== Responsive: Mobile ===== */
+@media (max-width: 720px) {
+  body {
+    overflow: auto;
+  }
+
+  /* allow scroll if content needs it */
+
+  .stage {
+    width: 96vw;
+    height: 96svh;
+    height: 96dvh;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .memeHeader {
+    padding: 10px 10px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+
+  .meta {
+    font-size: 12px;
+  }
+
+  /* When meme exists, keep meme panel slightly taller than question */
+  .stage.hasMeme {
+    grid-template-rows: 1.2fr auto;
+  }
+
+  .question {
+    padding: 14px 12px;
+  }
+
+  .sub {
+    font-size: 13px;
+  }
+
+  .btn {
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+}
+
+/* ===== Very small phones ===== */
+@media (max-width: 380px) {
+  .headline {
+    font-size: 22px;
+  }
+}
+
+.takeoverYes {
+  transition:
+    width 220ms ease,
+    height 220ms ease,
+    font-size 220ms ease,
+    border-radius 220ms ease;
+}
