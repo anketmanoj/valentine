@@ -89,7 +89,7 @@ export default function QuestionCard({
         <div className="accepted">
           <div className="acceptedCard">
             <div className="line" style={{ fontSize: 22, fontWeight: 900 }}>
-              Good girl, cant wait to see you very soon.
+              Good girl, cant wait to see you very soon 😘
             </div>
           </div>
         </div>

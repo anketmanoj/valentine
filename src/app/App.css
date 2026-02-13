@@ -442,10 +442,6 @@ body {
     overflow: hidden;
   }
 
-  .page {
-    overflow: hidden;
-  }
-
   /* Stage fills almost entire phone screen */
   .stage {
     width: 100vw;
@@ -454,15 +450,11 @@ body {
     padding: 14px;
     gap: 14px;
     border-radius: 18px;
-
-    /* Allow internal scroll if content needs it */
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
-  /* Meme area flexible, question always visible */
+  /* Meme takes majority of screen */
   .stage.hasMeme {
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: 1.9fr 0.9fr;
   }
 
   /* Question-only layout fills better */
@@ -471,23 +463,12 @@ body {
     place-items: center;
   }
 
-  /* Ensure grid children shrink properly */
-  .memePanel,
-  .question {
+  .memePanel {
     min-height: 0;
   }
 
   .memeBody {
-    height: 100%;
-    min-height: 0;
-    padding: 10px;
-  }
-
-  /* Prevent cropping chaos on tall videos */
-  .memeMedia {
-    max-height: 100%;
-    object-fit: contain;
-    background: rgba(0, 0, 0, 0.25);
+    height: 41vh;
   }
 
   /* Bigger headline on phone */
