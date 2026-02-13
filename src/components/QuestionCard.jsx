@@ -40,8 +40,12 @@ export default function QuestionCard({
 
   return (
     <section className="question">
-      <h1 className="headline">will you be my valentine?</h1>
-      <p className="sub">No pink. No cringe. Only memes and consequences.</p>
+      {!accepted && (
+        <>
+          <h1 className="headline">will you be my valentine?</h1>
+          <p className="sub">No pink. No cringe. Only memes and consequences.</p>
+        </>
+      )}
 
       {!accepted ? (
         <div
@@ -49,7 +53,6 @@ export default function QuestionCard({
           ref={actionsRef}
           style={{ height: `${expandedHeight}px` }}
         >
-          {/* ---------- STAGE 0: SAME SIZE, SIDE BY SIDE ---------- */}
           {isInitial && (
             <div className="buttonRow">
               <button className="btn yes" onClick={onYes}>
@@ -61,7 +64,6 @@ export default function QuestionCard({
             </div>
           )}
 
-          {/* ---------- STAGE 1+: YES TAKES OVER ---------- */}
           {!isInitial && (
             <>
               <button className="btn yes takeoverYes" onClick={onYes} style={yesTakeoverStyle}>
@@ -87,9 +89,9 @@ export default function QuestionCard({
       ) : (
         <div className="accepted">
           <div className="acceptedCard">
-            <div className="big">W.</div>
-            <div className="line">You chose peace.</div>
-            <div className="tiny">Now send her the link and act surprised.</div>
+            <div className="line" style={{ fontSize: 22, fontWeight: 900 }}>
+              Good girl, cant wait to see you very soon.
+            </div>
           </div>
         </div>
       )}

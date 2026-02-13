@@ -4,6 +4,7 @@ import "../app/app.css";
 import MemePanel from "../components/MemePanel";
 import QuestionCard from "../components/QuestionCard";
 import SplashScreen from "../components/SplashScreen";
+import ConfettiOverlay from "../components/ConfettiOverlay";
 
 import { MEMES } from "../logic/memePlaylist";
 import { YES_MEMES } from "../logic/yesMemePlaylist";
@@ -45,7 +46,6 @@ export default function App() {
     }
   }
 
-  // ---- Splash gate ----
   if (!started) {
     return <SplashScreen onNext={() => setStarted(true)} />;
   }
@@ -53,6 +53,7 @@ export default function App() {
   return (
     <div className="page">
       <div className="noise" aria-hidden="true" />
+      <ConfettiOverlay active={accepted} />
 
       <main className={`stage ${memeVisible ? "hasMeme" : "noMeme"}`}>
         {memeVisible && (

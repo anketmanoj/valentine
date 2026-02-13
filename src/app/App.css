@@ -414,3 +414,42 @@ body {
   display: grid;
   place-items: center;
 }
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confettiPiece {
+  position: absolute;
+  top: -12px;
+  opacity: 0.95;
+  animation-name: confettiFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, top;
+}
+
+.confettiPiece.rect {
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.confettiPiece.dot {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  100% {
+    transform: translateX(var(--drift)) rotate(720deg);
+    top: 110vh;
+  }
+}
