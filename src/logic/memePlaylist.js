@@ -2,19 +2,19 @@ export const MEMES = [
   {
     id: "varun-smile",
     type: "video",
-    src: "https://streamable.com/e/2afo4f?",
+    src: "https://anketmanoj.github.io/valentine/public/memes/hair.mp4",
     label: "Varun dumb smile 😭",
   },
   {
     id: "maa-shakti",
     type: "video",
-    src: "https://streamable.com/e/2afo4f?",
+    src: "https://anketmanoj.github.io/valentine/public/memes/hair.mp4",
     label: "maa shakti moment ⚡",
   },
   {
     id: "arjun-stare",
     type: "video",
-    src: "https://streamable.com/e/2afo4f?",
+    src: "https://anketmanoj.github.io/valentine/public/memes/hair.mp4",
     label: "Arjun stare of judgement 🧿",
   },
 
