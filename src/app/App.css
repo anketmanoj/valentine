@@ -365,3 +365,52 @@ body {
     font-size 220ms ease,
     border-radius 220ms ease;
 }
+
+/* ===== Splash ===== */
+.stage.splash {
+  display: grid;
+  place-items: center;
+  grid-template-rows: 1fr;
+}
+
+.splashCard {
+  width: min(820px, 96%);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--stroke);
+  background: var(--card);
+  padding: 22px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 80px rgba(120, 190, 255, 0.16);
+}
+
+.splashBadge {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  margin-bottom: 14px;
+}
+
+.splashTitle {
+  margin: 0;
+  font-size: clamp(22px, 3.2vw, 40px);
+  letter-spacing: -0.02em;
+}
+
+.splashSub {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.splashActions {
+  margin-top: 18px;
+  display: grid;
+  place-items: center;
+}

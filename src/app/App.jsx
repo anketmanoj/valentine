@@ -3,32 +3,51 @@ import "../app/app.css";
 
 import MemePanel from "../components/MemePanel";
 import QuestionCard from "../components/QuestionCard";
+import SplashScreen from "../components/SplashScreen";
 
 import { MEMES } from "../logic/memePlaylist";
+import { YES_MEMES } from "../logic/yesMemePlaylist";
 import { useMemeController } from "../logic/useMemeController";
 import { useNoButton } from "../logic/useNoButton";
+
+function pickRandom(list) {
+  if (!list?.length) return null;
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 export default function App() {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const actionsRef = useRef(null);
 
+  const [started, setStarted] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
   const { noClicks, noPos, noText, yesScale, moveNoButton, registerNoClick, maxNoSteps } =
     useNoButton(actionsRef);
 
-  const { activeMeme, memeVisible, triggerNextMeme, hideMeme } = useMemeController(MEMES);
+  const { activeMeme, memeVisible, triggerNextMeme, hideMeme, showMeme } = useMemeController(MEMES);
 
   async function onNo() {
     registerNoClick();
-    moveNoButton(); // ONLY moves on click
+    moveNoButton();
     await triggerNextMeme(videoRef.current, audioRef.current);
   }
 
-  function onYes() {
+  async function onYes() {
     setAccepted(true);
-    hideMeme(videoRef.current, audioRef.current);
+
+    const yesPick = pickRandom(YES_MEMES);
+    if (yesPick) {
+      await showMeme(yesPick, videoRef.current, audioRef.current);
+    } else {
+      hideMeme(videoRef.current, audioRef.current);
+    }
+  }
+
+  // ---- Splash gate ----
+  if (!started) {
+    return <SplashScreen onNext={() => setStarted(true)} />;
   }
 
   return (

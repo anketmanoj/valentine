@@ -78,5 +78,20 @@ export function useMemeController(memes) {
     [stopAllMedia],
   );
 
-  return { activeMeme, memeVisible, triggerNextMeme, hideMeme };
+  const showMeme = useCallback(
+    async (meme, videoEl, audioEl) => {
+      if (!meme) return null;
+
+      setActiveMeme(meme);
+      setMemeVisible(true);
+
+      stopAllMedia(videoEl, audioEl);
+      setTimeout(() => playActiveMeme(meme, videoEl, audioEl), 50);
+
+      return meme;
+    },
+    [playActiveMeme, stopAllMedia],
+  );
+
+  return { activeMeme, memeVisible, triggerNextMeme, hideMeme, showMeme };
 }
