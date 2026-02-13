@@ -15,7 +15,15 @@ export default function MemePanel({ visible, meme, videoRef, audioRef }) {
         {meme?.type === "gif" && <img className="memeMedia" src={meme.src} alt={meme.label} />}
 
         {meme?.type === "video" && (
-          <video ref={videoRef} className="memeMedia" src={meme.src} playsInline controls />
+          <video
+            ref={videoRef}
+            className="memeMedia"
+            src={meme.src}
+            playsInline
+            autoPlay
+            controls
+            loop
+          />
         )}
 
         {meme?.audioSrc && <audio ref={audioRef} src={meme.audioSrc} />}
